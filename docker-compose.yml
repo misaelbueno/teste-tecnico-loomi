@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  postgres_transferencias:
+    container_name: micro_db_transferencias
+    image: bitnami/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=transferencias
+
+  postgres_clientes:
+    container_name: micro_db_clientes
+    image: bitnami/postgresql
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=clientes
+
+  transferencias-ms:
+    build:
+      context: ./transferencias-ms
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres_transferencias
+
+  clientes-ms:
+    build:
+      context: ./clientes-ms
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres_clientes
