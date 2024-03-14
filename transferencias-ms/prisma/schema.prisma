@@ -9,8 +9,8 @@ datasource db {
 
 model Transaction {
   id             String   @id @default(uuid())
-  senderUserId   Int
-  receiverUserId Int
+  senderUserId   String
+  receiverUserId String
   amount         Float
   description    String?
   created_at     DateTime @default(now())
