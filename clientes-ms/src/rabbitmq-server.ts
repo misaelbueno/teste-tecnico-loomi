@@ -14,10 +14,14 @@ export default class RabbitmqServer {
     console.log('CONNECTED WHIT RABBITMQ')
   }
 
-  async consume(queue: string, callback: (message: Message) => void) {
-    return this.channel.consume(queue, (message) => {
-      callback(message)
-      this.channel.ack(message)
+  consumerMessage() {
+    this.channel.consume('transaction', async (message) => {
+      if (message) {
+        const msgParse = JSON.parse(message?.content.toString())
+        this.channel.ack(message)
+
+        console.log('MESSAGE RECEIVED', msgParse)
+      }
     })
   }
 }
